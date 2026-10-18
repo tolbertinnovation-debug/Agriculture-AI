@@ -1,0 +1,383 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Partner Console</title>
+<link rel="icon" href="/static/app/icon.svg" type="image/svg+xml">
+<style>
+:root{--bg:#f4f5f2;--card:#fff;--ink:#1d241e;--muted:#5f6b61;--line:#e1e4dd;--brand:#2f6b3a;--brand-ink:#fff;--warn:#a86200;--crit:#b3261e;--soft:#eef3ec}
+@media (prefers-color-scheme:dark){:root{--bg:#111411;--card:#1a1f1a;--ink:#e6ebe4;--muted:#9eab9f;--line:#2b332b;--brand:#6fb57b;--brand-ink:#0d150e;--warn:#f0b04f;--crit:#ff8a80;--soft:#202820}}
+*{box-sizing:border-box}
+body{margin:0;font:14px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--ink)}
+header{display:flex;align-items:center;gap:16px;padding:12px 20px;background:var(--card);border-bottom:1px solid var(--line);flex-wrap:wrap}
+header h1{font-size:17px;margin:0}
+header .org{color:var(--muted)}
+header .sp{flex:1}
+nav{display:flex;gap:4px;padding:8px 20px;background:var(--card);border-bottom:1px solid var(--line);overflow-x:auto}
+nav button{background:none;border:0;padding:8px 12px;border-radius:8px;color:var(--muted);font:inherit;font-weight:600;cursor:pointer;white-space:nowrap}
+nav button.active{background:var(--soft);color:var(--brand)}
+main{max-width:1180px;margin:0 auto;padding:20px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin-bottom:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:16px}
+.card h2{font-size:14px;margin:0 0 12px}
+.kpi .v{font-size:26px;font-weight:700;font-variant-numeric:tabular-nums}
+.kpi .l{color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.05em}
+table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+th,td{text-align:left;padding:8px 6px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--muted);font-weight:600;font-size:12px}
+.tw{overflow-x:auto}
+input,select,textarea{font:inherit;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink)}
+textarea{width:100%;min-height:80px}
+button.btn{font:inherit;font-weight:600;border:0;border-radius:8px;padding:8px 14px;background:var(--brand);color:var(--brand-ink);cursor:pointer}
+button.ghost{background:transparent;color:var(--brand);border:1px solid var(--brand)}
+.form{display:flex;gap:8px;flex-wrap:wrap;align-items:end}
+.form label{display:flex;flex-direction:column;gap:4px;font-size:12px;color:var(--muted)}
+.muted{color:var(--muted)}
+.chip{display:inline-block;padding:1px 8px;border-radius:999px;border:1px solid var(--line);font-size:12px;background:var(--soft)}
+.chip.needs_review,.chip.proposed{border-color:var(--warn);color:var(--warn)}
+.chip.critical{border-color:var(--crit);color:var(--crit)}
+.bar{height:8px;background:var(--soft);border-radius:4px;overflow:hidden}.bar i{display:block;height:100%;background:var(--brand)}
+.review{display:grid;grid-template-columns:220px 1fr;gap:16px;border-bottom:1px solid var(--line);padding:12px 0}
+.review img{width:100%;border-radius:8px;background:var(--soft);min-height:120px;object-fit:cover}
+@media (max-width:640px){.review{grid-template-columns:1fr}main{padding:12px 16px}}
+.hidden{display:none!important}
+#login{max-width:420px;margin:12vh auto}
+#login input{width:100%;margin:8px 0}
+pre{background:var(--soft);padding:10px;border-radius:8px;overflow:auto}
+</style>
+</head>
+<body>
+<div id="login" class="card">
+  <h2>Partner console</h2>
+  <p class="muted">For co-operatives, mobile operators, NGOs and buyers. Sign in with the API key issued to your organisation.</p>
+  <input id="key" type="password" placeholder="agk_…" autocomplete="off">
+  <button class="btn" id="btn-login">Sign in</button>
+  <p class="muted" id="login-err"></p>
+</div>
+
+<div id="shell" class="hidden">
+  <header><h1>Agriculture AI</h1><span class="org" id="org-name"></span><span class="sp"></span><button class="btn ghost" id="btn-logout">Sign out</button></header>
+  <nav id="tabs">
+    <button data-tab="overview" class="active">Overview</button>
+    <button data-tab="farmers">Farmers</button>
+    <button data-tab="review">Review queue</button>
+    <button data-tab="broadcast">Broadcast</button>
+    <button data-tab="prices">Prices</button>
+    <button data-tab="outbreaks">Outbreaks</button>
+    <button data-tab="buying">Buying</button>
+    <button data-tab="messages">Messages</button>
+    <button data-tab="settings">Settings</button>
+  </nav>
+  <main>
+    <section id="t-overview"></section>
+
+    <section id="t-farmers" class="hidden">
+      <div class="card"><h2>Register a farmer</h2>
+        <div class="form">
+          <label>Phone<input id="f-phone" placeholder="07xx…"></label>
+          <label>Name<input id="f-name"></label>
+          <label>Language<select id="f-lang"><option value="en">English</option><option value="sw">Kiswahili</option><option value="fr">Français</option></select></label>
+          <label>Region<input id="f-region"></label>
+          <label>Village<input id="f-village"></label>
+          <label>Lat<input id="f-lat" size="7"></label><label>Lon<input id="f-lon" size="7"></label>
+          <label>Crop<select id="f-crop"></select></label>
+          <label>Planted<input id="f-date" type="date"></label>
+          <label><span><input id="f-consent" type="checkbox"> Marketplace consent</span></label>
+          <button class="btn" id="btn-add-farmer">Add</button>
+        </div>
+      </div>
+      <div class="card"><h2>Bulk import (CSV)</h2>
+        <p class="muted">Columns: phone, name, language, gender, region, village, lat, lon, crops (separated by ;), planting_date (YYYY-MM-DD), consent_marketplace (yes/no)</p>
+        <div class="form"><input id="csv" type="file" accept=".csv,text/csv"><label><span><input id="csv-welcome" type="checkbox"> Send welcome SMS</span></label><button class="btn" id="btn-import">Import</button></div>
+        <pre id="import-result" class="hidden"></pre>
+      </div>
+      <div class="card"><h2>Farmers <span class="muted" id="f-total"></span></h2>
+        <div class="form" style="margin-bottom:10px"><input id="f-q" placeholder="Search name, phone, village"><button class="btn ghost" id="btn-search">Search</button></div>
+        <div class="tw"><table><thead><tr><th>Name</th><th>Phone</th><th>Village</th><th>Crops (stage)</th><th>Lang</th><th>Market</th><th>Last active</th></tr></thead><tbody id="f-rows"></tbody></table></div>
+      </div>
+    </section>
+
+    <section id="t-review" class="hidden">
+      <div class="card"><h2>Diagnoses awaiting an extension officer</h2><div id="review-list" class="muted"></div></div>
+      <div class="card"><h2>Recent automatic diagnoses</h2><div class="tw"><table><thead><tr><th>When</th><th>Crop</th><th>Result</th><th>Conf.</th><th>Engine</th><th>Channel</th></tr></thead><tbody id="auto-rows"></tbody></table></div></div>
+    </section>
+
+    <section id="t-broadcast" class="hidden">
+      <div class="card"><h2>Send an announcement</h2>
+        <textarea id="b-msg" maxlength="480" placeholder="Field day at Njoro centre on Friday 9am. Free seed samples."></textarea>
+        <div class="form" style="margin-top:8px">
+          <label>Crop<select id="b-crop"><option value="">All</option></select></label>
+          <label>Region<input id="b-region"></label>
+          <label>Language<select id="b-lang"><option value="">All</option><option value="en">English</option><option value="sw">Kiswahili</option><option value="fr">Français</option></select></label>
+          <button class="btn ghost" id="btn-estimate">Estimate cost</button><button class="btn" id="btn-send">Send</button>
+        </div>
+        <p id="b-result" class="muted"></p>
+      </div>
+    </section>
+
+    <section id="t-prices" class="hidden">
+      <div class="card"><h2>Record market prices</h2>
+        <div class="form">
+          <label>Crop<select id="p-crop"></select></label><label>Market<input id="p-market"></label>
+          <label>Price / kg<input id="p-price" type="number" step="0.01"></label>
+          <label>Lat<input id="p-lat" size="7"></label><label>Lon<input id="p-lon" size="7"></label>
+          <button class="btn" id="btn-price">Save</button>
+        </div>
+      </div>
+      <div class="card"><h2>Average prices, last 7 days</h2><div class="tw"><table><thead><tr><th>Crop</th><th>Avg / kg</th><th>Observations</th></tr></thead><tbody id="p-rows"></tbody></table></div></div>
+    </section>
+
+    <section id="t-outbreaks" class="hidden">
+      <div class="card"><h2>Active outbreaks (all partners)</h2><p class="muted">Clusters of confirmed reports. Farmers growing affected crops nearby are warned automatically.</p>
+        <div class="tw"><table><thead><tr><th>Pest / disease</th><th>Crop</th><th>Farms</th><th>Location</th><th>Radius</th><th>First seen</th><th>Last seen</th></tr></thead><tbody id="o-rows"></tbody></table></div></div>
+    </section>
+
+    <section id="t-buying" class="hidden">
+      <div class="card"><h2>Available smallholder supply</h2><div class="tw"><table><thead><tr><th>Crop</th><th>Region</th><th>Lots</th><th>Total kg</th></tr></thead><tbody id="s-rows"></tbody></table></div></div>
+      <div class="card"><h2>Post a buy request</h2>
+        <div class="form">
+          <label>Crop<select id="r-crop"></select></label><label>Quantity kg<input id="r-qty" type="number"></label>
+          <label>Price / kg<input id="r-price" type="number" step="0.01"></label><label>Min grade<select id="r-grade"><option>C</option><option>B</option><option>A</option></select></label>
+          <label>Min lot kg<input id="r-lot" type="number" value="0"></label>
+          <label>Lat<input id="r-lat" size="7"></label><label>Lon<input id="r-lon" size="7"></label><label>Radius km<input id="r-radius" type="number" value="50"></label>
+          <button class="btn" id="btn-request">Post &amp; match</button>
+        </div>
+      </div>
+      <div class="card"><h2>My buy requests</h2><div id="r-list" class="muted"></div></div>
+    </section>
+
+    <section id="t-messages" class="hidden">
+      <div class="card"><h2>Message log</h2><div class="tw"><table><thead><tr><th>When</th><th>Dir</th><th>Channel</th><th>Phone</th><th>Message</th><th>Seg.</th><th>Status</th></tr></thead><tbody id="m-rows"></tbody></table></div></div>
+    </section>
+
+    <section id="t-settings" class="hidden">
+      <div class="card"><h2>Organisation</h2><div id="org-info"></div>
+        <div class="form" style="margin-top:12px"><label>Brand name (SMS sender label)<input id="o-brand"></label><label>Contact phone (shared with farmers on deals)<input id="o-contact"></label><button class="btn" id="btn-org">Save</button></div></div>
+      <div class="card"><h2>API keys</h2>
+        <div class="form"><label>Name<input id="k-name"></label><label>Role<select id="k-role"><option value="officer">officer</option><option value="viewer">viewer</option><option value="admin">admin</option></select></label><button class="btn" id="btn-key">Create key</button></div>
+        <pre id="k-new" class="hidden"></pre>
+        <div class="tw"><table><thead><tr><th>Name</th><th>Prefix</th><th>Role</th><th>Last used</th><th></th></tr></thead><tbody id="k-rows"></tbody></table></div>
+      </div>
+      <div class="card"><h2>Run alert jobs now</h2><p class="muted">Normally run on a schedule. Alerts are de-duplicated, so running again is safe.</p><button class="btn ghost" id="btn-jobs">Run for my farmers</button><pre id="jobs-out" class="hidden"></pre></div>
+    </section>
+  </main>
+</div>
+
+<script>
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const fmtDate = d => d ? new Date(d).toLocaleString(undefined,{dateStyle:"medium",timeStyle:"short"}) : "–";
+const num = n => (n ?? 0).toLocaleString();
+const ss = {get:k=>{try{return sessionStorage.getItem(k)}catch(e){return null}},set:(k,v)=>{try{v==null?sessionStorage.removeItem(k):sessionStorage.setItem(k,v)}catch(e){}}};
+let KEY = ss.get("agri_key"), ORG = null, CROPS = [], PESTS = [];
+
+async function api(path, opts={}){
+  const headers = {"X-API-Key": KEY};
+  if(opts.json){headers["Content-Type"]="application/json"; opts.body=JSON.stringify(opts.json)}
+  const r = await fetch(path, {method:opts.method||"GET", headers, body:opts.body});
+  if(r.status===401){ logout(); throw new Error("unauthorised"); }
+  const data = r.status===204 ? null : await r.json().catch(()=>null);
+  if(!r.ok){ alert((data && (typeof data.detail==="string" ? data.detail : JSON.stringify(data.detail))) || r.status); throw new Error(r.status); }
+  return data;
+}
+const P = p => "/api/v1/partner"+p, B = p => "/api/v1/buyer"+p;
+
+$("#btn-login").onclick = async () => {
+  KEY = $("#key").value.trim();
+  try { ORG = await api(P("/org")); ss.set("agri_key", KEY); boot(); }
+  catch(e){ $("#login-err").textContent = "That key was not accepted."; }
+};
+function logout(){ KEY=null; ss.set("agri_key",null); $("#shell").classList.add("hidden"); $("#login").classList.remove("hidden"); }
+$("#btn-logout").onclick = logout;
+
+document.querySelectorAll("#tabs button").forEach(b => b.onclick = () => tab(b.dataset.tab));
+function tab(name){
+  document.querySelectorAll("#tabs button").forEach(b => b.classList.toggle("active", b.dataset.tab===name));
+  document.querySelectorAll("main>section").forEach(s => s.classList.toggle("hidden", s.id !== "t-"+name));
+  ({overview:loadOverview, farmers:loadFarmers, review:loadReview, prices:loadPrices, outbreaks:loadOutbreaks, buying:loadBuying, messages:loadMessages, settings:loadSettings})[name]?.();
+}
+const cropName = id => CROPS.find(c=>c.id===id)?.names.en || id;
+const pestName = id => PESTS.find(p=>p.id===id)?.names.en || id;
+
+async function boot(){
+  $("#login").classList.add("hidden"); $("#shell").classList.remove("hidden");
+  ORG = ORG || await api(P("/org"));
+  $("#org-name").textContent = `${ORG.brand_name||ORG.name} · ${ORG.kind} · ${ORG.country}`;
+  [CROPS, PESTS] = await Promise.all([fetch("/api/v1/crops").then(r=>r.json()), fetch("/api/v1/pests").then(r=>r.json())]);
+  const opts = CROPS.map(c=>`<option value="${c.id}">${esc(c.names.en)}</option>`).join("");
+  ["#f-crop","#p-crop","#r-crop"].forEach(s => $(s).innerHTML = opts);
+  $("#b-crop").innerHTML = `<option value="">All</option>` + opts;
+  // Buyers only source produce; farmer management tabs belong to distribution partners.
+  const buyerOnly = ORG.kind === "buyer";
+  ["overview","farmers","review","broadcast","messages"].forEach(n => document.querySelector(`#tabs [data-tab=${n}]`).classList.toggle("hidden", buyerOnly));
+  tab(buyerOnly ? "buying" : "overview");
+}
+
+// ---------------- overview
+async function loadOverview(){
+  const a = await api(P("/analytics?days=30"));
+  const out = a.messages.filter(m=>m.direction==="out").reduce((s,m)=>s+m.segments,0);
+  const inbound = a.messages.filter(m=>m.direction==="in").reduce((s,m)=>s+m.count,0);
+  const diag = Object.values(a.diagnoses.by_status).reduce((s,n)=>s+n,0);
+  const deals = a.marketplace.completed || {deals:0,kg:0,value:0};
+  const accepted = a.marketplace.accepted || {deals:0,kg:0,value:0};
+  const kpi = (v,l) => `<div class="card kpi"><div class="v">${v}</div><div class="l">${l}</div></div>`;
+  const crops = Object.entries(a.farmers.by_crop).sort((x,y)=>y[1]-x[1]);
+  const maxC = Math.max(1,...crops.map(c=>c[1]));
+  const helpfulPct = a.advice.rated ? Math.round(100*a.advice.helpful/a.advice.rated)+"%" : "–";
+  $("#t-overview").innerHTML = `
+    <div class="grid">
+      ${kpi(num(a.farmers.total),"Registered farmers")}
+      ${kpi(num(a.farmers.active),"Active, last 30 days")}
+      ${kpi(num(inbound),"Farmer messages in")}
+      ${kpi(num(out),"SMS segments sent")}
+      ${kpi(num(diag),"Plant diagnoses")}
+      ${kpi(helpfulPct,"Advice rated helpful")}
+      ${kpi(num(accepted.deals+deals.deals),"Market deals")}
+      ${kpi(num(Math.round(accepted.value+deals.value))+" "+esc(a.currency),"Deal value")}
+    </div>
+    <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(300px,1fr))">
+      <div class="card"><h2>Farmers by crop</h2>${crops.map(([c,n])=>`<div style="margin:6px 0"><div style="display:flex;justify-content:space-between"><span>${esc(cropName(c))}</span><b>${n}</b></div><div class="bar"><i style="width:${100*n/maxC}%"></i></div></div>`).join("") || '<p class="muted">No farmers yet.</p>'}</div>
+      <div class="card"><h2>Reach by gender</h2>${Object.entries(a.farmers.by_gender).map(([g,n])=>`<div style="display:flex;justify-content:space-between;padding:4px 0"><span>${esc(g)}</span><b>${n}</b></div>`).join("") || '<p class="muted">–</p>'}
+        <h2 style="margin-top:16px">Opted out</h2><b>${num(a.farmers.opted_out)}</b></div>
+      <div class="card"><h2>Top problems reported</h2>${a.diagnoses.top_pests.map(p=>`<div style="display:flex;justify-content:space-between;padding:4px 0"><span>${esc(pestName(p.pest_id))}</span><b>${p.count}</b></div>`).join("") || '<p class="muted">None yet.</p>'}
+        <h2 style="margin-top:16px">Diagnosis status</h2>${Object.entries(a.diagnoses.by_status).map(([s,n])=>`<span class="chip ${esc(s)}">${esc(s)}: ${n}</span> `).join("") || '<span class="muted">–</span>'}</div>
+      <div class="card"><h2>Alerts sent</h2>${Object.entries(a.alerts).map(([k,n])=>`<div style="display:flex;justify-content:space-between;padding:4px 0"><span>${esc(k)}</span><b>${n}</b></div>`).join("") || '<p class="muted">None yet.</p>'}
+        <h2 style="margin-top:16px">Advice answered</h2>${Object.entries(a.advice.by_engine).map(([k,n])=>`<span class="chip">${k==="llm"?"AI":"rules"}: ${n}</span> `).join("") || '<span class="muted">–</span>'}</div>
+    </div>`;
+}
+
+// ---------------- farmers
+async function loadFarmers(){
+  const q = encodeURIComponent($("#f-q").value||"");
+  const page = await api(P(`/farmers?limit=200&q=${q}`));
+  $("#f-total").textContent = `(${page.total})`;
+  $("#f-rows").innerHTML = page.items.map(f => `<tr><td>${esc(f.name||"–")}</td><td>${esc(f.phone)}${f.opted_out?' <span class="chip">opted out</span>':""}</td><td>${esc(f.village||"")}</td>
+    <td>${f.plots.map(p=>`${esc(cropName(p.crop))}${p.stage?` <span class="muted">(${esc(p.stage)})</span>`:""}`).join("<br>")}</td><td>${esc(f.language)}</td><td>${f.consent_marketplace?"✓":""}</td><td>${fmtDate(f.last_active_at)}</td></tr>`).join("")
+    || `<tr><td colspan="7" class="muted">No farmers yet.</td></tr>`;
+}
+$("#btn-search").onclick = loadFarmers;
+$("#btn-add-farmer").onclick = async () => {
+  const body = {phone:$("#f-phone").value, name:$("#f-name").value||null, language:$("#f-lang").value, region:$("#f-region").value||null,
+    village:$("#f-village").value||null, consent_marketplace:$("#f-consent").checked, plots:[{crop:$("#f-crop").value, planting_date:$("#f-date").value||null}]};
+  if($("#f-lat").value) body.lat = +$("#f-lat").value; if($("#f-lon").value) body.lon = +$("#f-lon").value;
+  await api(P("/farmers"),{method:"POST",json:body});
+  ["#f-phone","#f-name","#f-village"].forEach(s=>$(s).value=""); loadFarmers();
+};
+$("#btn-import").onclick = async () => {
+  const f = $("#csv").files[0]; if(!f) return;
+  const fd = new FormData(); fd.append("file", f);
+  const r = await api(P(`/farmers/import?send_welcome=${$("#csv-welcome").checked}`),{method:"POST", body:fd});
+  $("#import-result").textContent = JSON.stringify(r,null,2); $("#import-result").classList.remove("hidden"); loadFarmers();
+};
+
+// ---------------- review queue
+async function loadReview(){
+  const [queue, recent] = await Promise.all([api(P("/diagnoses?status=needs_review&limit=50")), api(P("/diagnoses?status=auto&limit=50"))]);
+  const pestOpts = id => PESTS.map(p=>`<option value="${p.id}" ${p.id===id?"selected":""}>${esc(p.names.en)}</option>`).join("") + `<option value="other">Other / not in list</option><option value="none" ${id==="none"?"selected":""}>Healthy</option>`;
+  $("#review-list").innerHTML = queue.length ? queue.map(d => `<div class="review" id="rv-${d.id}">
+      <div>${d.has_image ? `<img data-img="${d.id}" alt="Photo D${d.id}">` : `<div class="muted">${d.source==="text"?"Text report (SMS/USSD)":"No photo stored"}</div>`}</div>
+      <div><b>D${d.id}</b> · ${esc(cropName(d.crop||"?"))} · ${fmtDate(d.created_at)} · via ${esc(d.channel)} <span class="chip needs_review">${Math.round(d.confidence*100)}% ${esc(d.engine)}</span>
+        <p><b>AI suggestion:</b> ${esc(d.label||pestName(d.pest_id)||"none")}${d.result.visible_evidence?`<br><span class="muted">${esc(d.result.visible_evidence)}</span>`:""}</p>
+        ${d.symptoms_text?`<p><b>Farmer said:</b> ${esc(d.symptoms_text)}</p>`:""}
+        <div class="form"><label>Diagnosis<select data-pest>${pestOpts(d.pest_id)}</select></label>
+          <label style="flex:1">Note to farmer (SMS)<input data-notes maxlength="300" style="width:100%"></label>
+          <button class="btn" data-act="confirmed">Confirm &amp; notify</button><button class="btn ghost" data-act="rejected">Reject</button></div>
+      </div></div>`).join("") : "Queue is empty.";
+  queue.filter(d=>d.has_image).forEach(async d => {
+    const r = await fetch(P(`/diagnoses/${d.id}/image`),{headers:{"X-API-Key":KEY}});
+    if(r.ok){ const img = document.querySelector(`[data-img="${d.id}"]`); if(img) img.src = URL.createObjectURL(await r.blob()); }
+  });
+  document.querySelectorAll("#review-list [data-act]").forEach(b => b.onclick = async () => {
+    const box = b.closest(".review"), id = box.id.slice(3);
+    await api(P(`/diagnoses/${id}/review`),{method:"POST",json:{status:b.dataset.act, pest_id:box.querySelector("[data-pest]").value, notes:box.querySelector("[data-notes]").value||null}});
+    loadReview();
+  });
+  $("#auto-rows").innerHTML = recent.map(d=>`<tr><td>${fmtDate(d.created_at)}</td><td>${esc(cropName(d.crop||""))}</td><td>${esc(d.label||d.pest_id)}</td><td>${Math.round(d.confidence*100)}%</td><td>${esc(d.engine)}</td><td>${esc(d.channel)}</td></tr>`).join("") || `<tr><td colspan="6" class="muted">None.</td></tr>`;
+}
+
+// ---------------- broadcast
+async function broadcast(dry){
+  const body = {message:$("#b-msg").value, crop:$("#b-crop").value||null, region:$("#b-region").value||null, language:$("#b-lang").value||null, dry_run:dry};
+  if(!body.message.trim()) return;
+  if(!dry && !confirm("Send this SMS now?")) return;
+  const r = await api(P("/broadcast"),{method:"POST",json:body});
+  $("#b-result").textContent = dry ? `${r.recipients} recipients × ${r.segments_per_message} segment(s) = ${r.total_segments} SMS segments.` : `Sent to ${r.sent} of ${r.recipients} farmers (${r.total_segments} segments).`;
+}
+$("#btn-estimate").onclick = () => broadcast(true);
+$("#btn-send").onclick = () => broadcast(false);
+
+// ---------------- prices
+async function loadPrices(){
+  const rows = await api(P("/prices"));
+  $("#p-rows").innerHTML = rows.map(r=>`<tr><td>${esc(cropName(r.crop))}</td><td>${r.avg_price_per_kg} ${esc(r.currency)}</td><td>${r.observations}</td></tr>`).join("") || `<tr><td colspan="3" class="muted">No prices in the last 7 days.</td></tr>`;
+}
+$("#btn-price").onclick = async () => {
+  const row = {crop:$("#p-crop").value, market:$("#p-market").value, price_per_kg:+$("#p-price").value};
+  if($("#p-lat").value) row.lat=+$("#p-lat").value; if($("#p-lon").value) row.lon=+$("#p-lon").value;
+  await api(P("/prices"),{method:"POST",json:{prices:[row]}}); $("#p-price").value=""; loadPrices();
+};
+
+// ---------------- outbreaks
+async function loadOutbreaks(){
+  const rows = await api(P("/outbreaks"));
+  $("#o-rows").innerHTML = rows.map(o=>`<tr><td><b>${esc(o.pest)}</b></td><td>${esc(cropName(o.crop||""))}</td><td>${o.report_count}</td><td>${o.lat.toFixed(2)}, ${o.lon.toFixed(2)}</td><td>${o.radius_km} km</td><td>${fmtDate(o.first_seen)}</td><td>${fmtDate(o.last_seen)}</td></tr>`).join("") || `<tr><td colspan="7" class="muted">No active outbreaks.</td></tr>`;
+}
+
+// ---------------- buying
+async function loadBuying(){
+  const [supply, reqs] = await Promise.all([api(B("/supply")), api(B("/requests"))]);
+  $("#s-rows").innerHTML = supply.map(s=>`<tr><td>${esc(cropName(s.crop))}</td><td>${esc(s.region||"–")}</td><td>${s.lots}</td><td>${num(s.total_kg)}</td></tr>`).join("") || `<tr><td colspan="4" class="muted">No open supply.</td></tr>`;
+  if(!reqs.length){ $("#r-list").textContent = "No requests yet."; return; }
+  const blocks = await Promise.all(reqs.map(async r => {
+    const ms = await api(B(`/requests/${r.id}/matches`));
+    const pct = Math.min(100, Math.round(100*r.accepted_kg/r.quantity_kg));
+    return `<div style="border-bottom:1px solid var(--line);padding:10px 0">
+      <b>#${r.id} ${esc(cropName(r.crop))}</b> · ${num(r.quantity_kg)} kg @ ${r.price_per_kg} ${esc(r.currency)}/kg · grade ≥${esc(r.min_grade)} · ${r.radius_km} km <span class="chip">${esc(r.status)}</span>
+      <div class="muted">Offered ${num(r.committed_kg)} kg · accepted ${num(r.accepted_kg)} kg</div><div class="bar" style="margin:6px 0"><i style="width:${pct}%"></i></div>
+      ${r.status==="open"?`<button class="btn ghost" data-rematch="${r.id}">Re-run matching</button> <button class="btn ghost" data-close="${r.id}">Close</button>`:""}
+      <div class="tw"><table><thead><tr><th>Code</th><th>Farmer</th><th>Region</th><th>kg</th><th>Distance</th><th>Score</th><th>Status</th><th></th></tr></thead><tbody>
+      ${ms.map(m=>`<tr><td>${esc(m.code)}</td><td>${m.farmer_phone?esc((m.farmer_name||"")+" "+m.farmer_phone):'<span class="muted">hidden until accepted</span>'}</td><td>${esc(m.farmer_region||"")}</td><td>${num(m.quantity_kg)}</td><td>${m.distance_km??"–"} km</td><td>${m.score.toFixed(2)}</td><td><span class="chip ${esc(m.status)}">${esc(m.status)}</span></td>
+        <td>${m.status==="accepted"?`<button class="btn" data-complete="${m.id}">Mark collected &amp; paid</button>`:""}${["accepted","proposed"].includes(m.status)?` <button class="btn ghost" data-cancel="${m.id}">Cancel</button>`:""}</td></tr>`).join("") || '<tr><td colspan="8" class="muted">No eligible lots yet. New listings are matched automatically.</td></tr>'}
+      </tbody></table></div></div>`;
+  }));
+  $("#r-list").innerHTML = blocks.join("");
+  const act = (sel, fn) => document.querySelectorAll(sel).forEach(b => b.onclick = async () => { await fn(b); loadBuying(); });
+  act("[data-rematch]", b => api(B(`/requests/${b.dataset.rematch}/rematch`),{method:"POST"}));
+  act("[data-close]", b => api(B(`/requests/${b.dataset.close}/close`),{method:"POST"}));
+  act("[data-complete]", b => api(B(`/matches/${b.dataset.complete}/complete`),{method:"POST"}));
+  act("[data-cancel]", b => api(B(`/matches/${b.dataset.cancel}/cancel`),{method:"POST"}));
+}
+$("#btn-request").onclick = async () => {
+  const body = {crop:$("#r-crop").value, quantity_kg:+$("#r-qty").value, price_per_kg:+$("#r-price").value, min_grade:$("#r-grade").value,
+    min_lot_kg:+$("#r-lot").value||0, lat:+$("#r-lat").value, lon:+$("#r-lon").value, radius_km:+$("#r-radius").value||50};
+  await api(B("/requests"),{method:"POST",json:body}); loadBuying();
+};
+
+// ---------------- messages & settings
+async function loadMessages(){
+  const rows = await api(P("/messages?limit=200"));
+  $("#m-rows").innerHTML = rows.map(m=>`<tr><td>${fmtDate(m.created_at)}</td><td>${m.direction==="in"?"←":"→"}</td><td>${esc(m.channel)}</td><td>${esc(m.phone)}</td><td>${esc(m.body)}</td><td>${m.segments}</td><td>${esc(m.status)}</td></tr>`).join("") || `<tr><td colspan="7" class="muted">No messages yet.</td></tr>`;
+}
+async function loadSettings(){
+  ORG = await api(P("/org"));
+  $("#org-info").innerHTML = `<b>${esc(ORG.name)}</b> · ${esc(ORG.kind)} · ${esc(ORG.country)} · ${esc(ORG.currency)}<br><span class="muted">SMS shortcode: ${esc(ORG.sms_shortcode||"–")} · USSD: ${esc(ORG.ussd_code||"–")} · Marketplace: ${ORG.marketplace_enabled?"on":"off"}</span>`;
+  $("#o-brand").value = ORG.brand_name||""; $("#o-contact").value = ORG.contact_phone||"";
+  try{
+    const keys = await api(P("/keys"));
+    $("#k-rows").innerHTML = keys.map(k=>`<tr><td>${esc(k.name)}</td><td><code>${esc(k.prefix)}…</code></td><td>${esc(k.role)}</td><td>${fmtDate(k.last_used_at)}</td><td>${k.revoked_at?'<span class="chip">revoked</span>':`<button class="btn ghost" data-revoke="${k.id}">Revoke</button>`}</td></tr>`).join("");
+    document.querySelectorAll("[data-revoke]").forEach(b => b.onclick = async () => { if(confirm("Revoke this key?")){ await api(P(`/keys/${b.dataset.revoke}`),{method:"DELETE"}); loadSettings(); } });
+  }catch(e){ $("#k-rows").innerHTML = `<tr><td colspan="5" class="muted">Admin role required.</td></tr>`; }
+}
+$("#btn-org").onclick = async () => { await api(P("/org"),{method:"PATCH",json:{brand_name:$("#o-brand").value||null, contact_phone:$("#o-contact").value||null}}); loadSettings(); };
+$("#btn-key").onclick = async () => {
+  const r = await api(P("/keys"),{method:"POST",json:{name:$("#k-name").value||"key", role:$("#k-role").value}});
+  $("#k-new").textContent = "New key (copy it now, it will not be shown again):\n" + r.key; $("#k-new").classList.remove("hidden"); loadSettings();
+};
+$("#btn-jobs").onclick = async () => { const r = await api(P("/jobs/run"),{method:"POST"}); $("#jobs-out").textContent = JSON.stringify(r,null,2); $("#jobs-out").classList.remove("hidden"); };
+
+if(KEY) boot().catch(()=>logout());
+</script>
+</body>
+</html>

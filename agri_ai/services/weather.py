@@ -9,6 +9,7 @@ from datetime import date, datetime, timedelta
 from typing import Protocol
 
 import httpx
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from .. import i18n
@@ -141,7 +142,11 @@ def get_forecast(db: Session, lat: float, lon: float, days: int = 7) -> list[Day
     if cached:
         cached.payload, cached.fetched_at = payload, utcnow()
     else:
-        db.add(WeatherCache(key=key, payload=payload, fetched_at=utcnow()))
+        try:
+            with db.begin_nested():  # another request may have cached this cell concurrently
+                db.add(WeatherCache(key=key, payload=payload, fetched_at=utcnow()))
+        except IntegrityError:
+            pass
     db.flush()
     return days_fc[:days]
 

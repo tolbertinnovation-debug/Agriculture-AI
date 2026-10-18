@@ -133,6 +133,7 @@ def home(farmer: Farmer = Depends(current_farmer), db: Session = Depends(get_db)
     for crop in farmer.crops[:4]:
         prices[crop] = [q.to_dict() for q in latest_quotes(db, crop, lat=loc[0] if loc else None, lon=loc[1] if loc else None, country=farmer.org.country, limit=3)]
     unread = db.scalar(select(func.count()).select_from(Alert).where(Alert.farmer_id == farmer.id, Alert.read.is_(False)))
+    db.commit()  # persist the forecast cache
     return {
         "farmer": farmer_out(farmer).model_dump(mode="json"),
         "brand": farmer.org.display_name,

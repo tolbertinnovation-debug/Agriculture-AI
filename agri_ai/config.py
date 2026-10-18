@@ -20,6 +20,8 @@ def _bool(name: str, default: bool) -> bool:
 
 @dataclass(frozen=True)
 class Settings:
+    # "development" or "production". Production refuses to start with default secrets.
+    env: str = field(default_factory=lambda: os.environ.get("AGRI_ENV", "development"))
     database_url: str = field(default_factory=lambda: os.environ.get("AGRI_DATABASE_URL", "sqlite:///./agri_ai.db"))
     # Token for platform operators (creating partner organisations, running jobs).
     admin_token: str = field(default_factory=lambda: os.environ.get("AGRI_ADMIN_TOKEN", "dev-admin-token"))
@@ -60,7 +62,9 @@ class Settings:
     max_upload_bytes: int = field(default_factory=lambda: int(os.environ.get("AGRI_MAX_UPLOAD_BYTES", str(8 * 1024 * 1024))))
 
     # Expose the one-time password in the API response (development only!).
-    dev_expose_otp: bool = field(default_factory=lambda: _bool("AGRI_DEV_EXPOSE_OTP", True))
+    dev_expose_otp: bool = field(
+        default_factory=lambda: _bool("AGRI_DEV_EXPOSE_OTP", os.environ.get("AGRI_ENV", "development") != "production")
+    )
     farmer_token_days: int = field(default_factory=lambda: int(os.environ.get("AGRI_FARMER_TOKEN_DAYS", "30")))
 
     # Diagnoses below this confidence are routed to an extension officer for review.
@@ -71,6 +75,22 @@ class Settings:
     outbreak_min_reports: int = field(default_factory=lambda: int(os.environ.get("AGRI_OUTBREAK_MIN_REPORTS", "3")))
     outbreak_radius_km: float = field(default_factory=lambda: float(os.environ.get("AGRI_OUTBREAK_RADIUS_KM", "25")))
     outbreak_window_days: int = field(default_factory=lambda: int(os.environ.get("AGRI_OUTBREAK_WINDOW_DAYS", "14")))
+
+    def check_production(self) -> None:
+        """Fail fast on unsafe production configuration."""
+        if self.env != "production":
+            return
+        problems = []
+        if self.admin_token == "dev-admin-token":
+            problems.append("AGRI_ADMIN_TOKEN")
+        if self.secret_key == "dev-secret-change-me":
+            problems.append("AGRI_SECRET_KEY")
+        if self.webhook_secret == "dev-webhook-secret":
+            problems.append("AGRI_WEBHOOK_SECRET")
+        if problems:
+            raise RuntimeError(f"Set non-default values for {', '.join(problems)} in production")
+        if self.dev_expose_otp:
+            raise RuntimeError("AGRI_DEV_EXPOSE_OTP must be off in production")
 
     @property
     def llm_available(self) -> bool:

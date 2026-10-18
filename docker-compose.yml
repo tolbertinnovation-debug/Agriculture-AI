@@ -1,0 +1,28 @@
+# Local production-like stack: API + Postgres + an alert scheduler.
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: agri
+      POSTGRES_PASSWORD: agri
+      POSTGRES_DB: agri
+    volumes: [pgdata:/var/lib/postgresql/data]
+  api:
+    build: .
+    env_file: .env
+    environment:
+      AGRI_DATABASE_URL: postgresql+psycopg://agri:agri@db:5432/agri
+    ports: ["8000:8000"]
+    volumes: [uploads:/srv/uploads]
+    depends_on: [db]
+  scheduler:
+    build: .
+    env_file: .env
+    environment:
+      AGRI_DATABASE_URL: postgresql+psycopg://agri:agri@db:5432/agri
+    # Alerts are de-duplicated, so a simple loop is safe. Use cron / Cloud Scheduler in production.
+    command: ["sh", "-c", "while true; do python -m agri_ai.jobs; sleep 10800; done"]
+    depends_on: [api]
+volumes:
+  pgdata:
+  uploads:

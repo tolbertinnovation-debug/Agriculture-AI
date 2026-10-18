@@ -132,3 +132,14 @@ def test_weather_alerts_are_translated():
     fc = _days([(15, 25, 55, 95, 20)] + [(15, 25, 3, 30, 10)] * 6)
     msg = next(e for e in evaluate_forecast(fc, [_maize_at(30)], "sw") if e.kind == "heavy_rain").message
     assert msg.startswith("Mvua kubwa") and "mitaro" in msg
+
+
+def test_production_refuses_default_secrets():
+    from agri_ai.config import Settings
+
+    with pytest.raises(RuntimeError, match="AGRI_ADMIN_TOKEN"):
+        Settings(env="production", admin_token="dev-admin-token", dev_expose_otp=False).check_production()
+    ok = Settings(env="production", admin_token="a" * 32, secret_key="b" * 32, webhook_secret="c" * 32, dev_expose_otp=False)
+    ok.check_production()
+    with pytest.raises(RuntimeError, match="OTP"):
+        Settings(env="production", admin_token="a", secret_key="b", webhook_secret="c", dev_expose_otp=True).check_production()

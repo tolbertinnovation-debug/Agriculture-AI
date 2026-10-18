@@ -25,6 +25,7 @@ from ..models import (
     Listing,
     Match,
     Message,
+    OtpCode,
     Outbreak,
     Plot,
     utcnow,
@@ -225,6 +226,8 @@ def delete_farmer(farmer_id: int, p: Principal = Depends(admin), db: Session = D
         for m in db.scalars(select(Match).where(Match.listing_id == lst.id)):
             db.delete(m)
         db.delete(lst)
+    for otp in db.scalars(select(OtpCode).where(OtpCode.phone == farmer.phone)):
+        db.delete(otp)
     db.delete(farmer)
     db.commit()
 

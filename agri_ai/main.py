@@ -23,6 +23,7 @@ STATIC = Path(__file__).parent / "static"
 @asynccontextmanager
 async def lifespan(_app: FastAPI):
     logging.basicConfig(level=logging.INFO)
+    get_settings().check_production()
     create_all()
     get_kb()  # fail fast on a broken knowledge base
     yield

@@ -1,0 +1,10 @@
+{
+  "name": "Farm Assistant",
+  "short_name": "Farm",
+  "start_url": "/app",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#f6f4ee",
+  "theme_color": "#2f6b3a",
+  "icons": [{"src": "/static/app/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable"}]
+}

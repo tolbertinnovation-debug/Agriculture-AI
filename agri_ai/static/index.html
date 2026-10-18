@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Agriculture AI</title>
+<link rel="icon" href="/static/app/icon.svg" type="image/svg+xml">
+<style>
+:root{--bg:#f6f4ee;--card:#fff;--ink:#1e2a1f;--muted:#5d6b5f;--line:#e2e0d6;--brand:#2f6b3a;--brand-ink:#fff}
+@media (prefers-color-scheme:dark){:root{--bg:#121512;--card:#1c211c;--ink:#e8ede6;--muted:#a3b0a3;--line:#2c342c;--brand:#6fb57b;--brand-ink:#0d150e}}
+*{box-sizing:border-box}body{margin:0;font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--ink)}
+main{max-width:960px;margin:0 auto;padding:40px 16px}
+h1{font-size:34px;margin:0 0 8px;letter-spacing:-.01em}.lead{font-size:18px;color:var(--muted);max-width:680px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin:28px 0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px}.card h2{font-size:16px;margin:0 0 6px}.card p{margin:0;color:var(--muted);font-size:14px}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+a.btn{display:inline-block;padding:12px 18px;border-radius:10px;background:var(--brand);color:var(--brand-ink);text-decoration:none;font-weight:600}
+a.btn.ghost{background:transparent;color:var(--brand);border:1.5px solid var(--brand)}
+code{background:var(--card);border:1px solid var(--line);padding:1px 6px;border-radius:6px}
+</style>
+</head>
+<body>
+<main>
+  <h1>Agriculture AI</h1>
+  <p class="lead">Crop advice, pest detection from a phone photo, weather and price alerts, and matching farmers to buyers. Built for smallholders and delivered through the telcos, co-operatives and NGOs they already trust.</p>
+  <div class="cta"><a class="btn" href="/app">Farmer app</a><a class="btn ghost" href="/dashboard">Partner console</a><a class="btn ghost" href="/docs">API docs</a></div>
+  <div class="grid">
+    <div class="card"><h2>Works on any phone</h2><p>SMS and USSD for feature phones, WhatsApp photos, and a light web app. English, Kiswahili and French.</p></div>
+    <div class="card"><h2>Pest &amp; disease check</h2><p>Photo diagnosis grounded on a curated agronomy library. Uncertain or notifiable cases go to an extension officer.</p></div>
+    <div class="card"><h2>Alerts that matter</h2><p>Forecasts turned into stage-aware advice, price moves at nearby markets, and outbreak warnings from neighbours' reports.</p></div>
+    <div class="card"><h2>Fair market access</h2><p>Buyers post demand; the matcher pools many small lots into one order. Farmers accept by SMS with <code>YES CODE</code>.</p></div>
+  </div>
+</main>
+</body>
+</html>
