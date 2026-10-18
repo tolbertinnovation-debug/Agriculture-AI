@@ -1,0 +1,192 @@
+{
+  "_note": "Curated smallholder agronomy reference. Durations are typical for medium-maturity varieties in tropical East/West Africa and shift with variety, altitude and season. Fertiliser figures are common extension starting points, not substitutes for a soil test or local extension advice.",
+  "crops": [
+    {
+      "id": "maize",
+      "names": {"en": "maize", "sw": "mahindi", "fr": "maïs"},
+      "aliases": ["corn", "mais", "mahindi", "maize"],
+      "season_days": 120,
+      "frost_sensitive": true,
+      "heat_stress_c": 35,
+      "critical_water_stages": ["tasseling_silking"],
+      "spacing": "75 cm between rows, 25-30 cm between plants (1 seed per hole) or 75 x 50 cm with 2 seeds per hole",
+      "fertilizer": "At planting: DAP or NPK 23:23:0 about 50 kg/acre placed below the seed. Top-dress with CAN or urea about 50 kg/acre when plants are knee-high (4-6 weeks). Add manure/compost where available.",
+      "stages": [
+        {"id": "germination", "name": "Germination & emergence", "start": 0, "end": 10,
+         "tasks": ["Plant at the onset of reliable rains (soil moist to 5 cm)", "Gap-fill missing hills within 7-10 days"]},
+        {"id": "vegetative", "name": "Vegetative growth", "start": 11, "end": 55,
+         "tasks": ["Weed at 2-3 and 5-6 weeks", "Top-dress nitrogen at knee height", "Scout twice weekly for fall armyworm in the leaf whorl"]},
+        {"id": "tasseling_silking", "name": "Tasseling & silking", "start": 56, "end": 75,
+         "tasks": ["Most water-sensitive stage: mulch or irrigate if dry", "Avoid any stress; yield is set now"]},
+        {"id": "grain_fill", "name": "Grain filling", "start": 76, "end": 110,
+         "tasks": ["Keep field weed-free", "Watch for ear rots after heavy rain"]},
+        {"id": "maturity", "name": "Maturity & harvest", "start": 111, "end": 140,
+         "tasks": ["Harvest at black-layer / dry husks", "Dry grain to 13% moisture before storage to prevent aflatoxin", "Use hermetic bags against weevils and larger grain borer"]}
+      ],
+      "pests": ["fall_armyworm", "maize_stalk_borer", "maize_lethal_necrosis", "maize_streak_virus", "grey_leaf_spot", "northern_leaf_blight", "striga", "storage_weevil", "aflatoxin"]
+    },
+    {
+      "id": "beans",
+      "names": {"en": "beans", "sw": "maharagwe", "fr": "haricot"},
+      "aliases": ["bean", "common bean", "maharage", "maharagwe", "haricots"],
+      "season_days": 90,
+      "frost_sensitive": true,
+      "heat_stress_c": 32,
+      "critical_water_stages": ["flowering_podding"],
+      "spacing": "50 cm between rows, 10-15 cm between plants (bush types)",
+      "fertilizer": "DAP about 50 kg/acre at planting, or well-rotted manure. Beans fix their own nitrogen once nodulated; rhizobium inoculant helps on new land.",
+      "stages": [
+        {"id": "germination", "name": "Germination", "start": 0, "end": 8, "tasks": ["Plant into moist, well-drained soil", "Use clean certified seed to avoid seed-borne disease"]},
+        {"id": "vegetative", "name": "Vegetative growth", "start": 9, "end": 35, "tasks": ["Weed early; avoid working in the field when leaves are wet (spreads disease)", "Scout for bean fly and aphids"]},
+        {"id": "flowering_podding", "name": "Flowering & podding", "start": 36, "end": 65, "tasks": ["Critical water stage", "Watch for rust and angular leaf spot", "Control aphids and pod borers"]},
+        {"id": "maturity", "name": "Maturity & harvest", "start": 66, "end": 100, "tasks": ["Harvest when most pods are dry and yellow", "Dry well and store with hermetic bags against bruchids"]}
+      ],
+      "pests": ["bean_rust", "angular_leaf_spot", "bean_fly", "aphids", "bean_bruchid"]
+    },
+    {
+      "id": "cassava",
+      "names": {"en": "cassava", "sw": "muhogo", "fr": "manioc"},
+      "aliases": ["manioc", "mhogo", "muhogo", "yuca", "tapioca"],
+      "season_days": 300,
+      "frost_sensitive": true,
+      "heat_stress_c": 40,
+      "critical_water_stages": ["establishment"],
+      "spacing": "1 m x 1 m (10,000 plants/ha)",
+      "fertilizer": "Responds to potassium. Manure or NPK 17:17:17 at about 50 kg/acre 1-2 months after planting on poor soils.",
+      "stages": [
+        {"id": "establishment", "name": "Establishment", "start": 0, "end": 60, "tasks": ["Plant clean 20-25 cm stem cuttings from disease-free mother plants", "Weed at 1 and 2 months - the crop is most sensitive to weeds now"]},
+        {"id": "canopy", "name": "Canopy development", "start": 61, "end": 150, "tasks": ["Rogue (uproot and destroy) plants with mosaic or brown streak symptoms", "Watch for whiteflies and mealybugs"]},
+        {"id": "bulking", "name": "Root bulking", "start": 151, "end": 300, "tasks": ["Keep weeds down", "Plan harvest; roots keep in the ground but quality drops after ~18 months"]},
+        {"id": "maturity", "name": "Harvest", "start": 301, "end": 540, "tasks": ["Harvest as needed; process within 48 hours (roots deteriorate fast)"]}
+      ],
+      "pests": ["cassava_mosaic_disease", "cassava_brown_streak", "cassava_mealybug", "whitefly"]
+    },
+    {
+      "id": "rice",
+      "names": {"en": "rice", "sw": "mpunga", "fr": "riz"},
+      "aliases": ["paddy", "mpunga", "mchele", "riz"],
+      "season_days": 120,
+      "frost_sensitive": true,
+      "heat_stress_c": 35,
+      "critical_water_stages": ["flowering"],
+      "spacing": "20 x 20 cm transplanting, 1-2 seedlings per hill",
+      "fertilizer": "NPK basal at transplanting; split urea top-dressing at tillering and panicle initiation.",
+      "stages": [
+        {"id": "nursery", "name": "Nursery / establishment", "start": 0, "end": 25, "tasks": ["Transplant 14-21 day old seedlings", "Level the field for even water"]},
+        {"id": "tillering", "name": "Tillering", "start": 26, "end": 60, "tasks": ["Keep 2-5 cm water", "Weed and top-dress urea", "Scout for stem borers"]},
+        {"id": "flowering", "name": "Panicle & flowering", "start": 61, "end": 90, "tasks": ["Never let field dry out now", "Watch for blast on leaves and neck"]},
+        {"id": "maturity", "name": "Grain fill & harvest", "start": 91, "end": 130, "tasks": ["Drain 10-14 days before harvest", "Harvest when 80-85% of grains are straw-coloured", "Protect from birds"]}
+      ],
+      "pests": ["rice_blast", "rice_yellow_mottle", "rice_stem_borer"]
+    },
+    {
+      "id": "sorghum",
+      "names": {"en": "sorghum", "sw": "mtama", "fr": "sorgho"},
+      "aliases": ["mtama", "sorgho", "milo"],
+      "season_days": 110,
+      "frost_sensitive": true,
+      "heat_stress_c": 40,
+      "critical_water_stages": ["flowering"],
+      "spacing": "60-75 cm between rows, 15-20 cm between plants",
+      "fertilizer": "Moderate: DAP about 25-50 kg/acre at planting; CAN top-dress on poor soils.",
+      "stages": [
+        {"id": "germination", "name": "Emergence", "start": 0, "end": 10, "tasks": ["Plant shallow (2-3 cm) into moist soil"]},
+        {"id": "vegetative", "name": "Vegetative growth", "start": 11, "end": 60, "tasks": ["Thin to recommended spacing", "Weed and watch for striga, stem borer and fall armyworm"]},
+        {"id": "flowering", "name": "Flowering", "start": 61, "end": 80, "tasks": ["Sensitive to drought; conserve moisture", "Scout for midge and head bugs"]},
+        {"id": "maturity", "name": "Grain fill & harvest", "start": 81, "end": 120, "tasks": ["Protect against birds", "Harvest when grain is hard; dry before threshing"]}
+      ],
+      "pests": ["striga", "fall_armyworm", "maize_stalk_borer", "aphids"]
+    },
+    {
+      "id": "tomato",
+      "names": {"en": "tomato", "sw": "nyanya", "fr": "tomate"},
+      "aliases": ["tomatoes", "nyanya", "tomate"],
+      "season_days": 110,
+      "frost_sensitive": true,
+      "heat_stress_c": 32,
+      "critical_water_stages": ["flowering_fruiting"],
+      "spacing": "60-90 cm between rows, 45-60 cm between plants; stake indeterminate varieties",
+      "fertilizer": "Manure plus DAP at transplanting; CAN and a potassium source during fruiting. Calcium deficiency causes blossom-end rot.",
+      "stages": [
+        {"id": "nursery", "name": "Nursery & transplanting", "start": 0, "end": 30, "tasks": ["Raise seedlings in a raised, clean nursery", "Transplant 3-4 week old seedlings in the evening"]},
+        {"id": "vegetative", "name": "Vegetative", "start": 31, "end": 55, "tasks": ["Stake and prune", "Install pheromone traps for Tuta absoluta", "Water at the base, not on leaves"]},
+        {"id": "flowering_fruiting", "name": "Flowering & fruiting", "start": 56, "end": 90, "tasks": ["Regular watering prevents blossom-end rot and cracking", "Spray preventively against late blight in cool wet weather"]},
+        {"id": "harvest", "name": "Harvest", "start": 91, "end": 150, "tasks": ["Pick at breaker/pink stage for distant markets", "Respect pesticide pre-harvest intervals"]}
+      ],
+      "pests": ["tomato_late_blight", "tuta_absoluta", "early_blight", "bacterial_wilt", "whitefly"]
+    },
+    {
+      "id": "potato",
+      "names": {"en": "potato", "sw": "viazi", "fr": "pomme de terre"},
+      "aliases": ["potatoes", "irish potato", "viazi", "pomme de terre"],
+      "season_days": 100,
+      "frost_sensitive": true,
+      "heat_stress_c": 30,
+      "critical_water_stages": ["tuber_initiation"],
+      "spacing": "75 cm between rows, 30 cm between tubers",
+      "fertilizer": "DAP or NPK 17:17:17 about 200 kg/acre in the furrow at planting, mixed with soil.",
+      "stages": [
+        {"id": "sprouting", "name": "Sprouting & emergence", "start": 0, "end": 20, "tasks": ["Plant certified, well-sprouted seed tubers"]},
+        {"id": "vegetative", "name": "Vegetative", "start": 21, "end": 40, "tasks": ["Hill up soil around stems", "Start late blight prevention in wet weather"]},
+        {"id": "tuber_initiation", "name": "Tuber initiation & bulking", "start": 41, "end": 80, "tasks": ["Critical water stage", "Second hilling; remove wilting plants (bacterial wilt)"]},
+        {"id": "maturity", "name": "Maturity & harvest", "start": 81, "end": 120, "tasks": ["Cut haulms 2 weeks before harvest to harden skin", "Store in dark, cool, ventilated place"]}
+      ],
+      "pests": ["potato_late_blight", "bacterial_wilt", "aphids"]
+    },
+    {
+      "id": "groundnut",
+      "names": {"en": "groundnut", "sw": "karanga", "fr": "arachide"},
+      "aliases": ["peanut", "peanuts", "groundnuts", "karanga", "arachide"],
+      "season_days": 110,
+      "frost_sensitive": true,
+      "heat_stress_c": 38,
+      "critical_water_stages": ["pegging_podding"],
+      "spacing": "45-60 cm between rows, 10-15 cm between plants",
+      "fertilizer": "Needs calcium at pegging (gypsum where soils are poor). Little nitrogen needed.",
+      "stages": [
+        {"id": "germination", "name": "Emergence", "start": 0, "end": 10, "tasks": ["Plant early and at high density - reduces rosette"]},
+        {"id": "vegetative", "name": "Vegetative", "start": 11, "end": 35, "tasks": ["Weed carefully", "Control aphids that spread rosette"]},
+        {"id": "pegging_podding", "name": "Flowering, pegging & pod fill", "start": 36, "end": 90, "tasks": ["Do not disturb soil around pegs", "Critical water stage"]},
+        {"id": "maturity", "name": "Harvest", "start": 91, "end": 130, "tasks": ["Harvest when inside of shells darkens", "Dry quickly to prevent aflatoxin"]}
+      ],
+      "pests": ["groundnut_rosette", "aphids", "aflatoxin"]
+    },
+    {
+      "id": "coffee",
+      "names": {"en": "coffee", "sw": "kahawa", "fr": "café"},
+      "aliases": ["kahawa", "cafe", "café", "arabica", "robusta"],
+      "season_days": 365,
+      "perennial": true,
+      "frost_sensitive": true,
+      "heat_stress_c": 30,
+      "critical_water_stages": ["flowering", "berry_expansion"],
+      "spacing": "2.7 x 2.7 m (arabica) or per local recommendation",
+      "fertilizer": "NPK after main rains plus nitrogen top-dressing split in two; mulch heavily.",
+      "stages": [
+        {"id": "flowering", "name": "Flowering", "start": 0, "end": 30, "tasks": ["Flowering follows the first rains after a dry spell", "Keep weeds down"]},
+        {"id": "berry_expansion", "name": "Berry expansion", "start": 31, "end": 150, "tasks": ["Spray copper preventively against berry disease and leaf rust in wet periods", "Prune suckers"]},
+        {"id": "ripening", "name": "Ripening", "start": 151, "end": 240, "tasks": ["Watch for berry borer"]},
+        {"id": "harvest", "name": "Harvest & post-harvest", "start": 241, "end": 365, "tasks": ["Pick only red ripe cherries", "Deliver to the factory the same day"]}
+      ],
+      "pests": ["coffee_leaf_rust", "coffee_berry_disease", "coffee_berry_borer"]
+    },
+    {
+      "id": "banana",
+      "names": {"en": "banana", "sw": "ndizi", "fr": "banane"},
+      "aliases": ["bananas", "plantain", "matoke", "ndizi", "banane"],
+      "season_days": 365,
+      "perennial": true,
+      "frost_sensitive": true,
+      "heat_stress_c": 38,
+      "critical_water_stages": ["bunch_development"],
+      "spacing": "3 x 3 m; keep 3 suckers per mat (mother, daughter, granddaughter)",
+      "fertilizer": "Heavy feeder: manure/compost every season plus potassium-rich fertiliser; mulch.",
+      "stages": [
+        {"id": "vegetative", "name": "Vegetative", "start": 0, "end": 240, "tasks": ["De-sucker to 3 plants per mat", "Remove dry leaves; mulch"]},
+        {"id": "bunch_development", "name": "Flowering & bunch development", "start": 241, "end": 330, "tasks": ["Remove the male bud with a forked stick after the last hand opens (prevents BXW)", "Prop heavy plants"]},
+        {"id": "harvest", "name": "Harvest", "start": 331, "end": 400, "tasks": ["Harvest when fingers are full and rounded", "Disinfect tools between mats"]}
+      ],
+      "pests": ["banana_xanthomonas_wilt", "fusarium_wilt_banana", "banana_weevil"]
+    }
+  ]
+}

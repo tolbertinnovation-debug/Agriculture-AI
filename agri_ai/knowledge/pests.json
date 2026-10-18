@@ -1,0 +1,335 @@
+{
+  "_note": "Pest & disease reference used to ground AI diagnoses and to power the offline symptom matcher. Chemical options are listed as active ingredients; always use products registered in the farmer's country, follow the label, wear protection and respect pre-harvest intervals. Integrated pest management first.",
+  "pests": [
+    {
+      "id": "fall_armyworm", "type": "insect", "crops": ["maize", "sorghum"],
+      "names": {"en": "Fall armyworm", "sw": "Viwavijeshi vamizi", "fr": "Chenille légionnaire d'automne"},
+      "symptoms": "Ragged holes and 'window panes' on young leaves, wet sawdust-like frass in the leaf whorl, caterpillars with an inverted Y on the head and four dots in a square near the tail.",
+      "keywords": ["holes", "whorl", "sawdust", "frass", "caterpillar", "worm", "armyworm", "ragged", "window", "chewed", "viwavi", "funza", "chenille"],
+      "severity": "high", "spread_risk": "high", "notifiable": false,
+      "cultural": ["Scout 20 plants in a W pattern twice a week from emergence", "Hand-pick and crush egg masses and caterpillars", "Intercrop with desmodium and border with brachiaria/napier (push-pull)", "Plant early and at the same time as neighbours"],
+      "biological": ["Bacillus thuringiensis (Bt) sprays into the whorl", "Metarhizium or Beauveria-based biopesticides", "Protect natural enemies (earwigs, ants, parasitic wasps)"],
+      "chemical": ["Emamectin benzoate", "Spinetoram", "Chlorantraniliprole", "Spray into the whorl early morning or evening; act when >20% of young plants are damaged"]
+    },
+    {
+      "id": "maize_stalk_borer", "type": "insect", "crops": ["maize", "sorghum"],
+      "names": {"en": "Maize stalk borer", "sw": "Funza wa bua", "fr": "Foreur de tige"},
+      "symptoms": "Rows of small 'shot holes' across leaves, dead heart in young plants, tunnels and larvae inside stems, broken stalks.",
+      "keywords": ["shot holes", "dead heart", "tunnel", "stem", "stalk", "borer", "broken stalk", "bua"],
+      "severity": "medium", "spread_risk": "medium", "notifiable": false,
+      "cultural": ["Push-pull with desmodium and napier grass", "Destroy or feed stalks to livestock after harvest", "Early planting"],
+      "biological": ["Bt-based products", "Conserve parasitoid wasps (Cotesia)"],
+      "chemical": ["Registered granules or sprays applied to the whorl at first sign"]
+    },
+    {
+      "id": "maize_lethal_necrosis", "type": "viral", "crops": ["maize"],
+      "names": {"en": "Maize lethal necrosis (MLN)", "sw": "Ugonjwa wa mnyauko wa mahindi", "fr": "Nécrose létale du maïs"},
+      "symptoms": "Yellow-green mottling starting at the leaf base, leaf edges drying from the tip and margins inward, 'dead heart', small or no cobs, whole plants drying prematurely.",
+      "keywords": ["mottle", "mottling", "yellow streaks", "drying from edges", "dead heart", "necrosis", "lethal", "whole plant dying"],
+      "severity": "critical", "spread_risk": "high", "notifiable": true,
+      "cultural": ["Uproot and destroy infected plants immediately", "Plant certified seed only; do not recycle seed", "Rotate out of maize for 1-2 seasons (beans, potatoes, cassava)", "Avoid continuous or overlapping maize plantings", "Report to your extension officer"],
+      "biological": [],
+      "chemical": ["No cure. Control insect vectors (thrips, aphids) with registered insecticides early in the season"]
+    },
+    {
+      "id": "maize_streak_virus", "type": "viral", "crops": ["maize"],
+      "names": {"en": "Maize streak virus", "sw": "Batobato ya mahindi", "fr": "Virus de la striure du maïs"},
+      "symptoms": "Narrow, broken yellow-white streaks running along the leaf veins; stunted plants when infected early.",
+      "keywords": ["streak", "streaks", "stripes", "yellow lines", "white lines", "stunted", "batobato"],
+      "severity": "medium", "spread_risk": "medium", "notifiable": false,
+      "cultural": ["Plant tolerant varieties", "Plant early and avoid late plantings next to older maize", "Remove grass weeds that host leafhoppers", "Rogue infected young plants"],
+      "biological": [],
+      "chemical": ["Seed treatment against leafhopper vectors where recommended"]
+    },
+    {
+      "id": "grey_leaf_spot", "type": "fungal", "crops": ["maize"],
+      "names": {"en": "Grey leaf spot", "fr": "Cercosporiose du maïs"},
+      "symptoms": "Rectangular tan to grey lesions bounded by leaf veins, starting on lower leaves; common in humid, warm areas.",
+      "keywords": ["rectangular", "grey spots", "gray spots", "tan lesions", "lesions", "lower leaves", "leaf spot"],
+      "severity": "medium", "spread_risk": "medium", "notifiable": false,
+      "cultural": ["Use resistant varieties", "Rotate with legumes", "Bury or remove crop residue"],
+      "biological": [],
+      "chemical": ["Strobilurin + triazole fungicide where the crop value justifies it"]
+    },
+    {
+      "id": "northern_leaf_blight", "type": "fungal", "crops": ["maize"],
+      "names": {"en": "Northern leaf blight (Turcicum)", "fr": "Helminthosporiose du maïs"},
+      "symptoms": "Long cigar-shaped grey-green to tan lesions (2.5-15 cm) on leaves, starting low on the plant in cool humid weather.",
+      "keywords": ["cigar", "long lesions", "blight", "elongated", "tan streaks", "turcicum"],
+      "severity": "medium", "spread_risk": "medium", "notifiable": false,
+      "cultural": ["Resistant varieties", "Rotation and residue management"],
+      "biological": [],
+      "chemical": ["Triazole or strobilurin fungicide at early infection on susceptible varieties"]
+    },
+    {
+      "id": "striga", "type": "weed", "crops": ["maize", "sorghum"],
+      "names": {"en": "Striga (witchweed)", "sw": "Kiduha", "fr": "Striga"},
+      "symptoms": "Crop stunted and wilting/yellowing as if drought-stressed even with moisture; small plants with bright pink-purple flowers growing at the crop's base.",
+      "keywords": ["purple flowers", "pink flowers", "witchweed", "striga", "kiduha", "weed attached", "stunted yellow"],
+      "severity": "high", "spread_risk": "low", "notifiable": false,
+      "cultural": ["Push-pull: intercrop desmodium (causes suicidal germination)", "Uproot striga before it flowers and burn", "Rotate with soybean, groundnut or cowpea", "Add manure/compost; striga is worse on poor soils"],
+      "biological": ["Fusarium oxysporum f.sp. strigae (FOS) seed coating where available"],
+      "chemical": ["Imazapyr-resistant (IR) maize with herbicide seed coating"]
+    },
+    {
+      "id": "storage_weevil", "type": "insect", "crops": ["maize", "sorghum", "rice"],
+      "names": {"en": "Storage weevils / larger grain borer", "sw": "Dumuzi / Scania", "fr": "Charançons"},
+      "symptoms": "Small holes in stored grain, flour-like dust, small dark beetles in the store.",
+      "keywords": ["storage", "store", "weevil", "dust", "holes in grain", "dumuzi", "stored grain", "beetle"],
+      "severity": "medium", "spread_risk": "low", "notifiable": false,
+      "cultural": ["Dry grain to 13% moisture (grain cracks when bitten)", "Clean the store before new harvest", "Use hermetic (airtight) storage bags or silos"],
+      "biological": [],
+      "chemical": ["Registered grain protectant dust (e.g. pirimiphos-methyl + permethrin) at label rates"]
+    },
+    {
+      "id": "aflatoxin", "type": "fungal", "crops": ["maize", "groundnut"],
+      "names": {"en": "Aflatoxin / ear rot moulds", "fr": "Aflatoxine"},
+      "symptoms": "Green-yellow or grey powdery mould on cobs or nuts, discoloured or shrivelled grain, musty smell.",
+      "keywords": ["mould", "mold", "green powder", "rotten cob", "ear rot", "musty", "aflatoxin"],
+      "severity": "critical", "spread_risk": "low", "notifiable": false,
+      "cultural": ["Harvest on time and dry quickly off the ground (tarpaulin)", "Sort out and destroy mouldy, damaged grain - never feed it to people or animals", "Store dry in clean bags on pallets"],
+      "biological": ["Aflasafe-type atoxigenic biocontrol applied 2-3 weeks before flowering"],
+      "chemical": []
+    },
+    {
+      "id": "bean_rust", "type": "fungal", "crops": ["beans"],
+      "names": {"en": "Bean rust", "sw": "Kutu ya maharagwe", "fr": "Rouille du haricot"},
+      "symptoms": "Small raised reddish-brown powdery pustules on the underside of leaves, often with a yellow halo.",
+      "keywords": ["rust", "pustules", "reddish", "brown powder", "orange powder", "kutu"],
+      "severity": "medium", "spread_risk": "high", "notifiable": false,
+      "cultural": ["Resistant varieties", "Rotate crops; remove volunteer beans", "Avoid working in wet fields"],
+      "biological": [],
+      "chemical": ["Mancozeb preventively, or a triazole fungicide at first pustules"]
+    },
+    {
+      "id": "angular_leaf_spot", "type": "fungal", "crops": ["beans"],
+      "names": {"en": "Angular leaf spot", "fr": "Taches anguleuses"},
+      "symptoms": "Angular grey-brown spots bounded by leaf veins; spots on pods are reddish-brown with dark borders.",
+      "keywords": ["angular", "angular spots", "grey brown spots", "pod spots", "leaf spot"],
+      "severity": "medium", "spread_risk": "medium", "notifiable": false,
+      "cultural": ["Use clean certified seed", "Rotation for at least 2 seasons", "Remove crop residues"],
+      "biological": [],
+      "chemical": ["Copper-based or mancozeb fungicides"]
+    },
+    {
+      "id": "bean_fly", "type": "insect", "crops": ["beans"],
+      "names": {"en": "Bean stem maggot (bean fly)", "fr": "Mouche du haricot"},
+      "symptoms": "Seedlings wilt and die; swollen, cracked stem base with small maggots or pupae inside; yellowing young plants.",
+      "keywords": ["seedlings wilting", "swollen stem", "maggot", "cracked stem", "young plants dying"],
+      "severity": "medium", "spread_risk": "medium", "notifiable": false,
+      "cultural": ["Earth up soil around stems to encourage new roots", "Mulch and keep plants vigorous", "Plant early"],
+      "biological": [],
+      "chemical": ["Insecticide seed dressing (e.g. thiamethoxam, imidacloprid)"]
+    },
+    {
+      "id": "aphids", "type": "insect", "crops": ["beans", "groundnut", "potato", "sorghum", "tomato"],
+      "names": {"en": "Aphids", "sw": "Vidukari", "fr": "Pucerons"},
+      "symptoms": "Clusters of tiny soft green or black insects on shoot tips and leaf undersides, curled leaves, sticky honeydew, black sooty mould.",
+      "keywords": ["aphids", "tiny insects", "black insects", "green insects", "sticky", "honeydew", "curled leaves", "sooty", "vidukari"],
+      "severity": "low", "spread_risk": "medium", "notifiable": false,
+      "cultural": ["Remove heavily infested shoots", "Avoid excess nitrogen"],
+      "biological": ["Conserve ladybirds and lacewings", "Neem extract or soap-water spray"],
+      "chemical": ["Systemic insecticides only as a last resort and not during flowering (protect bees)"]
+    },
+    {
+      "id": "bean_bruchid", "type": "insect", "crops": ["beans"],
+      "names": {"en": "Bean bruchid", "sw": "Fukusi wa maharagwe", "fr": "Bruche du haricot"},
+      "symptoms": "Round exit holes in stored beans, small beetles in storage.",
+      "keywords": ["holes in beans", "stored beans", "bruchid", "beetles", "storage"],
+      "severity": "medium", "spread_risk": "low", "notifiable": false,
+      "cultural": ["Dry beans well", "Hermetic storage bags", "Clean store before storing"],
+      "biological": [],
+      "chemical": ["Registered storage protectant dust"]
+    },
+    {
+      "id": "cassava_mosaic_disease", "type": "viral", "crops": ["cassava"],
+      "names": {"en": "Cassava mosaic disease", "sw": "Batobato ya muhogo", "fr": "Mosaïque du manioc"},
+      "symptoms": "Yellow/pale green mosaic patterns on leaves, distorted, twisted and reduced leaves, stunted plants.",
+      "keywords": ["mosaic", "mottled", "twisted leaves", "distorted", "yellow patches", "batobato", "deformed leaves"],
+      "severity": "high", "spread_risk": "high", "notifiable": false,
+      "cultural": ["Plant only clean cuttings from healthy plants", "Grow resistant varieties", "Uproot and destroy infected plants early", "Control whiteflies"],
+      "biological": [],
+      "chemical": ["No cure"]
+    },
+    {
+      "id": "cassava_brown_streak", "type": "viral", "crops": ["cassava"],
+      "names": {"en": "Cassava brown streak disease", "fr": "Striure brune du manioc"},
+      "symptoms": "Yellow blotches along secondary leaf veins on older leaves, brown streaks on green stems, dry brown corky rot inside roots.",
+      "keywords": ["brown streak", "root rot", "corky", "brown roots", "yellow veins", "stem streaks"],
+      "severity": "critical", "spread_risk": "high", "notifiable": true,
+      "cultural": ["Use certified clean planting material", "Tolerant varieties", "Harvest early in affected areas", "Uproot and destroy infected plants; report to extension"],
+      "biological": [],
+      "chemical": ["No cure"]
+    },
+    {
+      "id": "cassava_mealybug", "type": "insect", "crops": ["cassava"],
+      "names": {"en": "Cassava mealybug", "fr": "Cochenille farineuse du manioc"},
+      "symptoms": "White waxy cotton-like insects on shoot tips, bunched 'bunchy top' leaves, shortened internodes.",
+      "keywords": ["white cotton", "mealybug", "bunchy top", "waxy", "white insects"],
+      "severity": "medium", "spread_risk": "medium", "notifiable": false,
+      "cultural": ["Use clean cuttings", "Remove and burn infested tips"],
+      "biological": ["Parasitoid wasp Anagyrus lopezi (classical biological control)"],
+      "chemical": []
+    },
+    {
+      "id": "whitefly", "type": "insect", "crops": ["cassava", "tomato", "beans"],
+      "names": {"en": "Whiteflies", "sw": "Inzi weupe", "fr": "Aleurodes"},
+      "symptoms": "Clouds of tiny white flying insects when leaves are disturbed, yellowing leaves, sticky honeydew; vectors of viruses.",
+      "keywords": ["white flies", "whitefly", "tiny white insects", "flying white", "inzi weupe"],
+      "severity": "medium", "spread_risk": "high", "notifiable": false,
+      "cultural": ["Yellow sticky traps", "Remove weed hosts", "Use insect-proof nursery netting"],
+      "biological": ["Neem-based sprays", "Conserve predators"],
+      "chemical": ["Rotate registered insecticide groups to avoid resistance"]
+    },
+    {
+      "id": "rice_blast", "type": "fungal", "crops": ["rice"],
+      "names": {"en": "Rice blast", "fr": "Pyriculariose du riz"},
+      "symptoms": "Diamond/spindle-shaped lesions with grey centres and brown margins on leaves; blackened neck that breaks so panicles hang down white and empty.",
+      "keywords": ["diamond", "spindle", "eye-shaped", "neck rot", "blast", "white panicle", "empty grains"],
+      "severity": "high", "spread_risk": "high", "notifiable": false,
+      "cultural": ["Resistant varieties", "Avoid excessive nitrogen; split applications", "Keep fields flooded", "Destroy infected straw"],
+      "biological": [],
+      "chemical": ["Tricyclazole or other registered blast fungicides at booting/heading"]
+    },
+    {
+      "id": "rice_yellow_mottle", "type": "viral", "crops": ["rice"],
+      "names": {"en": "Rice yellow mottle virus", "fr": "Panachure jaune du riz"},
+      "symptoms": "Yellow-orange mottling and streaking of leaves, stunting, reduced tillering, poor panicle emergence.",
+      "keywords": ["yellow mottle", "orange leaves", "mottling", "stunted rice"],
+      "severity": "high", "spread_risk": "medium", "notifiable": false,
+      "cultural": ["Resistant varieties", "Destroy stubble and volunteer rice between seasons", "Synchronised planting"],
+      "biological": [],
+      "chemical": ["No cure"]
+    },
+    {
+      "id": "rice_stem_borer", "type": "insect", "crops": ["rice"],
+      "names": {"en": "Rice stem borer", "fr": "Foreur de tige du riz"},
+      "symptoms": "Dead central tiller ('dead heart') during tillering; white empty panicles ('white heads') at heading.",
+      "keywords": ["dead heart", "white heads", "white panicle", "borer", "tiller dying"],
+      "severity": "medium", "spread_risk": "medium", "notifiable": false,
+      "cultural": ["Plough in stubble after harvest", "Synchronised planting", "Collect egg masses from nurseries"],
+      "biological": ["Conserve spiders and parasitoids"],
+      "chemical": ["Registered insecticides when infestation exceeds thresholds"]
+    },
+    {
+      "id": "tomato_late_blight", "type": "fungal", "crops": ["tomato"],
+      "names": {"en": "Tomato late blight", "sw": "Baka jani chelewa", "fr": "Mildiou de la tomate"},
+      "symptoms": "Large dark water-soaked patches on leaves and stems spreading fast in cool wet weather, white mould under leaves, firm brown greasy patches on fruit.",
+      "keywords": ["water soaked", "dark patches", "blight", "black leaves", "brown fruit", "rotting fast", "white mould under", "mildiou"],
+      "severity": "critical", "spread_risk": "high", "notifiable": false,
+      "cultural": ["Remove and destroy infected plants and leaves", "Water at the base, not the leaves", "Stake and prune for airflow", "Do not plant next to potatoes"],
+      "biological": [],
+      "chemical": ["Mancozeb preventively in wet weather", "Metalaxyl + mancozeb or other systemic once symptoms appear; rotate groups"]
+    },
+    {
+      "id": "tuta_absoluta", "type": "insect", "crops": ["tomato", "potato"],
+      "names": {"en": "Tomato leafminer (Tuta absoluta)", "fr": "Mineuse de la tomate"},
+      "symptoms": "Irregular whitish/transparent mines (blotches) in leaves with dark frass inside, holes in fruit, small caterpillars.",
+      "keywords": ["mines", "leaf mines", "tunnels in leaves", "transparent patches", "holes in fruit", "tuta", "leafminer"],
+      "severity": "high", "spread_risk": "high", "notifiable": false,
+      "cultural": ["Pheromone (delta) and water traps", "Remove and destroy infested leaves and fruits", "Insect-proof netting in nurseries/greenhouses", "Crop rotation away from tomato"],
+      "biological": ["Bt sprays", "Predatory mirid bugs where available"],
+      "chemical": ["Spinosad, emamectin benzoate or chlorantraniliprole; rotate modes of action"]
+    },
+    {
+      "id": "early_blight", "type": "fungal", "crops": ["tomato", "potato"],
+      "names": {"en": "Early blight", "fr": "Alternariose"},
+      "symptoms": "Brown spots with concentric 'target' rings on older lower leaves, yellowing around spots.",
+      "keywords": ["target", "rings", "concentric", "brown spots", "lower leaves yellow", "bullseye"],
+      "severity": "medium", "spread_risk": "medium", "notifiable": false,
+      "cultural": ["Remove lower infected leaves", "Mulch to stop soil splash", "Rotate 2-3 years"],
+      "biological": [],
+      "chemical": ["Mancozeb or chlorothalonil; azoxystrobin-based products"]
+    },
+    {
+      "id": "bacterial_wilt", "type": "bacterial", "crops": ["tomato", "potato"],
+      "names": {"en": "Bacterial wilt", "sw": "Mnyauko bakteria", "fr": "Flétrissement bactérien"},
+      "symptoms": "Sudden wilting of green plants in the heat of the day without yellowing; a cut stem placed in clear water releases milky white streams.",
+      "keywords": ["wilting", "sudden wilt", "wilt", "milky ooze", "plants dying green", "mnyauko", "drooping"],
+      "severity": "critical", "spread_risk": "medium", "notifiable": false,
+      "cultural": ["Uproot and destroy wilted plants (do not compost)", "Rotate 3+ years away from tomato, potato, pepper, eggplant", "Use certified seed tubers/seedlings", "Do not move soil or water from infected fields; disinfect tools"],
+      "biological": [],
+      "chemical": ["No effective chemical cure"]
+    },
+    {
+      "id": "potato_late_blight", "type": "fungal", "crops": ["potato"],
+      "names": {"en": "Potato late blight", "sw": "Baka jani chelewa", "fr": "Mildiou de la pomme de terre"},
+      "symptoms": "Dark brown-black water-soaked lesions on leaves with pale halo and white mould underneath in humid weather; brown rot in tubers.",
+      "keywords": ["blight", "black leaves", "water soaked", "brown lesions", "white mould", "tubers rotting", "mildiou"],
+      "severity": "critical", "spread_risk": "high", "notifiable": false,
+      "cultural": ["Plant certified seed and tolerant varieties", "Hill up well to protect tubers", "Remove volunteer potatoes and cull piles"],
+      "biological": [],
+      "chemical": ["Preventive mancozeb sprays every 7-10 days in wet weather", "Systemic + contact mixes after first symptoms"]
+    },
+    {
+      "id": "groundnut_rosette", "type": "viral", "crops": ["groundnut"],
+      "names": {"en": "Groundnut rosette", "fr": "Rosette de l'arachide"},
+      "symptoms": "Severely stunted bushy plants with small, mottled, yellow or dark-green crinkled leaves.",
+      "keywords": ["rosette", "bushy", "stunted", "small crinkled leaves", "mottled"],
+      "severity": "high", "spread_risk": "medium", "notifiable": false,
+      "cultural": ["Plant early and at close spacing", "Resistant varieties", "Rogue infected plants"],
+      "biological": [],
+      "chemical": ["Control aphid vectors early"]
+    },
+    {
+      "id": "coffee_leaf_rust", "type": "fungal", "crops": ["coffee"],
+      "names": {"en": "Coffee leaf rust", "sw": "Kutu ya majani ya kahawa", "fr": "Rouille orangée du caféier"},
+      "symptoms": "Orange-yellow powdery spots on the underside of leaves, leaf drop.",
+      "keywords": ["orange powder", "rust", "yellow spots", "leaf fall", "kutu"],
+      "severity": "high", "spread_risk": "high", "notifiable": false,
+      "cultural": ["Resistant varieties (e.g. Ruiru 11, Batian in Kenya)", "Good nutrition and pruning", "Moderate shade"],
+      "biological": [],
+      "chemical": ["Copper fungicides preventively; triazoles curatively"]
+    },
+    {
+      "id": "coffee_berry_disease", "type": "fungal", "crops": ["coffee"],
+      "names": {"en": "Coffee berry disease", "fr": "Anthracnose des baies"},
+      "symptoms": "Dark sunken lesions on green berries that turn black and drop; flower blossoms blackened.",
+      "keywords": ["black berries", "sunken", "berries dropping", "dark lesions", "cbd"],
+      "severity": "high", "spread_risk": "high", "notifiable": false,
+      "cultural": ["Resistant varieties", "Prune for ventilation"],
+      "biological": [],
+      "chemical": ["Copper-based fungicides during rainy periods from flowering"]
+    },
+    {
+      "id": "coffee_berry_borer", "type": "insect", "crops": ["coffee"],
+      "names": {"en": "Coffee berry borer", "fr": "Scolyte des baies"},
+      "symptoms": "Small round holes at the tip of berries, damaged beans with tunnels.",
+      "keywords": ["holes in berries", "borer", "tunnels", "berry tip hole"],
+      "severity": "medium", "spread_risk": "medium", "notifiable": false,
+      "cultural": ["Pick all ripe, overripe and fallen berries (strip picking at season end)", "Alcohol-baited traps"],
+      "biological": ["Beauveria bassiana sprays"],
+      "chemical": ["Registered insecticides if infestation is high"]
+    },
+    {
+      "id": "banana_xanthomonas_wilt", "type": "bacterial", "crops": ["banana"],
+      "names": {"en": "Banana Xanthomonas wilt (BXW)", "sw": "Mnyauko bakteria wa migomba", "fr": "Flétrissement bactérien du bananier"},
+      "symptoms": "Yellowing and wilting leaves, shrivelled male bud, uneven premature fruit ripening, yellow bacterial ooze from cut pseudostem, brown stains in fruit pulp.",
+      "keywords": ["yellow ooze", "wilting banana", "male bud", "premature ripening", "rotting fruit", "bxw"],
+      "severity": "critical", "spread_risk": "high", "notifiable": true,
+      "cultural": ["Remove male buds with a forked stick", "Disinfect tools with fire or bleach between plants", "Cut down and bury infected mats (single diseased stem removal)", "Use clean suckers; report to extension"],
+      "biological": [],
+      "chemical": ["No chemical cure"]
+    },
+    {
+      "id": "fusarium_wilt_banana", "type": "fungal", "crops": ["banana"],
+      "names": {"en": "Fusarium wilt (Panama disease)", "fr": "Maladie de Panama"},
+      "symptoms": "Older leaves yellow from the margins and collapse around the pseudostem, splitting at the base, reddish-brown discolouration inside the stem.",
+      "keywords": ["panama", "yellow edges", "split stem", "brown inside stem", "leaves collapse"],
+      "severity": "critical", "spread_risk": "medium", "notifiable": true,
+      "cultural": ["Use tissue-culture plantlets", "Resistant cultivars", "Do not move soil, plants or water from infected fields"],
+      "biological": [],
+      "chemical": ["No chemical cure"]
+    },
+    {
+      "id": "banana_weevil", "type": "insect", "crops": ["banana"],
+      "names": {"en": "Banana weevil", "fr": "Charançon du bananier"},
+      "symptoms": "Tunnels in the corm, weak plants that topple, poor bunches, black weevils under trash.",
+      "keywords": ["tunnels corm", "toppling", "falling plants", "weevil", "corm"],
+      "severity": "medium", "spread_risk": "low", "notifiable": false,
+      "cultural": ["Pare and hot-water treat suckers before planting", "Split pseudostem traps", "Chop and spread old pseudostems after harvest"],
+      "biological": ["Beauveria bassiana in traps"],
+      "chemical": []
+    }
+  ]
+}
